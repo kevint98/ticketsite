@@ -1,0 +1,50 @@
+{% extends 'main.html' %} 
+{% block title %}
+	{% if page == 'login' %}
+		Login
+	{% else %}
+		Register
+	{% endif %}
+{% endblock title %} 
+
+{% block content %}
+<main>
+	{% if page == 'login' %}
+		<h3>Login</h3>
+		<form method="POST" action="">
+			{% csrf_token %}
+			<div>
+				<label for="email">Email Address</label>
+				<input type="email" name="email" id="" />
+			</div>
+			<div>
+				<label for="password">Password</label>
+				<input type="password" name="password" id="" />
+			</div>
+			{% if messages%} {% for message in messages %}
+				<p>{{ message }}</p>
+			{% endfor %}{% endif %}
+			<button type="submit">Login</button>
+		</form>
+		<p>Haven't signed up yet? <a href="{% url 'register' %}">Register</a></p>
+	{% else %}
+
+		<!-- Register -->
+		<h3>Register</h3>
+		<form method="POST" action="">
+			{% csrf_token %}
+			{% for field in form %}
+				<div>
+					<label for="{{ field.label }}">{{ field.label }}</label>
+					{{ field }}
+				</div>
+			{% endfor %}
+			{% if messages%} {% for message in messages %}
+				<p>{{ message }}</p>
+			{% endfor %}{% endif %}
+			<button type="submit">Register</button>
+		</form>
+		<p>Already Registered? <a href="{% url 'login' %}">Login</a></p>
+	{% endif %} 
+</main>
+{% endblock content%}
