@@ -1,50 +1,64 @@
-{% extends 'main.html' %} 
-{% block title %}
-	{% if page == 'login' %}
-		Login
-	{% else %}
-		Register
-	{% endif %}
-{% endblock title %} 
-
-{% block content %}
-<main>
-	{% if page == 'login' %}
-		<h3>Login</h3>
-		<form method="POST" action="">
-			{% csrf_token %}
-			<div>
-				<label for="email">Email Address</label>
-				<input type="email" name="email" id="" />
-			</div>
-			<div>
-				<label for="password">Password</label>
-				<input type="password" name="password" id="" />
-			</div>
-			{% if messages%} {% for message in messages %}
-				<p>{{ message }}</p>
-			{% endfor %}{% endif %}
-			<button type="submit">Login</button>
-		</form>
-		<p>Haven't signed up yet? <a href="{% url 'register' %}">Register</a></p>
-	{% else %}
-
-		<!-- Register -->
-		<h3>Register</h3>
-		<form method="POST" action="">
-			{% csrf_token %}
-			{% for field in form %}
-				<div>
-					<label for="{{ field.label }}">{{ field.label }}</label>
-					{{ field }}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+	{% load bootstrap5 %} {% bootstrap_css %}
+	<title>
+		{% block title %} 
+			{% if page == 'login' %} 
+				Login 
+			{% else %} 
+				Register 
+			{% endif %} 
+		{% endblock title %} 
+	</title>
+</head>
+<body>
+	{% block content %} {% load crispy_forms_tags %}
+<main class="login-register-page">
+	<div class="login-register-container">
+		<div class="login-register">
+			{% if page == 'login' %}
+			<h3 class="page-title mb-4">Login</h3>
+			<form method="POST" action="">
+				{% csrf_token %}
+				<div class="mb-3">
+					<label for="email" class="form-label">Email Address</label>
+					<input type="email" name="email" class="form-control" id="" />
 				</div>
-			{% endfor %}
-			{% if messages%} {% for message in messages %}
+				<div class="mb-3">
+					<label for="password" class="form-label">Password</label>
+					<input type="password" name="password" class="form-control" id="" />
+				</div>
+				{% if messages%} {% for message in messages %}
 				<p>{{ message }}</p>
-			{% endfor %}{% endif %}
-			<button type="submit">Register</button>
-		</form>
-		<p>Already Registered? <a href="{% url 'login' %}">Login</a></p>
-	{% endif %} 
+				{% endfor %}{% endif %}
+				<button type="submit" class="btn btn-primary mb-3">Login</button>
+			</form>
+			<p>Haven't signed up yet? <a href="{% url 'register' %}">Register</a></p>
+			{% else %}
+
+			<!-- Register -->
+			<h3 class="page-title mb-4">Register</h3>
+			<form method="POST" action="">
+				{% csrf_token %} 
+				{{ form|crispy }}
+				{% if messages%} {% for message in messages %}
+				<p>{{ message }}</p>
+				{% endfor %}{% endif %}
+				<button type="submit" class="btn btn-primary  mb-3">Register</button>
+			</form>
+			<p>Already Registered? <a href="{% url 'login' %}">Login</a></p>
+			{% endif %}
+		</div>
+	</div>
 </main>
 {% endblock content%}
+
+</body>
+</html>
+

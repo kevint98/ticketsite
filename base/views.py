@@ -44,8 +44,8 @@ def registerPage(request):
             messages.success(request, "Registration successful.")
             return redirect('home')
         else:
-            messages.error(
-                request, 'Invalid information provided. Registration unsuccessful.')
+            # use Django's built-in validation
+            pass
 
     context = {"form": form}
     return render(request, 'base/login_register.html', context)

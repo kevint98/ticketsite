@@ -1,0 +1,76 @@
+:root {
+	--primary-shade: #189ab4;
+	--secondary-shade: #75e6da;
+	--accent-shade: #d4f1f4;
+	--dark-shade: #05445e;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--secondary-shade) !important;
+}
+
+/* Header Styles */
+header nav {
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem;
+}
+
+nav.bg-info {
+	background-color: var(--primary-shade) !important;
+}
+
+h1 {
+	padding-left: 1rem;
+}
+
+/* Main Content */
+
+/***
+ Login/Register Page 
+ ***/
+main.login-register-page {
+	height: 100%;
+	display: flex;
+}
+
+.login-register-container {
+	margin: auto;
+	padding: 2rem;
+	background-color: var(--primary-shade);
+	border: none;
+	border-radius: 16px;
+	max-width: 100%;
+}
+
+.login-register {
+	min-width: 350px;
+}
+
+.page-title {
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bolder;
+	color: white;
+}
+#hint_id_password1,
+#hint_id_password2 {
+	display: none;
+}
+
+.login-register p,
+.form-label,
+.form-text {
+	color: white !important;
+}
+
+.btn {
+	width: 100%;
+}
