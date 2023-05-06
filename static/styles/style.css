@@ -83,3 +83,21 @@ main.login-register-page {
 .login-btn {
 	width: 100%;
 }
+
+/*** 
+Create a Form Page
+***/
+
+main.create-ticket__page {
+	height: 100%;
+	display: flex;
+}
+
+.create-ticket__container {
+	margin: auto;
+	padding: 2rem;
+	background-color: var(--primary-shade);
+	border: none;
+	border-radius: 16px;
+	max-width: 100%;
+}

@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
+from django.db.models import Q
 import re
+from django.utils import timezone
 
 
 class CustomUserManager(UserManager):
@@ -60,9 +62,11 @@ class Project(models.Model):
     name = models.CharField(max_length=200)
     client = models.CharField(max_length=200, default='Internal')
     project_manager = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True)
-    started = models.DateTimeField("start date", blank=True)
-    completed = models.DateTimeField("completion date", blank=True)
+        User, on_delete=models.SET_NULL, null=True, limit_choices_to=Q(role__contains="PM"))
+    description = models.TextField(default="")
+    started = models.DateTimeField(
+        "start date", blank=True, default=timezone.now)
+    completed = models.DateTimeField("completion date", blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -80,15 +84,20 @@ class TicketCategory(models.Model):
 
 
 class Ticket(models.Model):
+    STATUS_CHOICES = [
+        ("Open", 'Open'),
+        ("In Progress", 'In Progress'),
+        ("Closed", 'Closed'),
+    ]
     title = models.CharField(max_length=200)
     description = models.TextField()
     category = models.ForeignKey(
         TicketCategory, on_delete=models.SET_NULL, null=True)
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
     owner = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, related_name="createdtickets")
-    project_manager = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, related_name="assignedtickets")
+        User, on_delete=models.SET_NULL, null=True)
+    status = models.CharField(choices=STATUS_CHOICES,
+                              max_length=15, default='Open')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

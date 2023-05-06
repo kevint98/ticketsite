@@ -1,0 +1,17 @@
+{% extends 'main.html' %} {% block content %} {% load crispy_forms_tags %}
+<main class="create-ticket__page">
+	<div class="create-ticket__container">
+		<form action="" method="POST">
+			{% csrf_token %} 
+            {{ form|crispy }}
+			<div class="form__action">
+				<a class="btn btn-secondary" href="{{ request.META.HTTP_REFERER }}"
+					>Cancel</a
+				>
+				<button class="btn btn-primary" type="submit">Submit</button>
+			</div>
+		</form>
+	</div>
+</main>
+<script></script>
+{% endblock content %}
