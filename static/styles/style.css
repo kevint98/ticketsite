@@ -18,13 +18,21 @@ body {
 
 /* Header Styles */
 header nav {
-	display: flex;
 	justify-content: space-between;
+	align-items: baseline;
 	padding: 1rem;
 }
 
 nav.bg-info {
 	background-color: var(--primary-shade) !important;
+}
+
+.nav-item {
+	display: flex;
+}
+
+.nav-link {
+	padding: 0 1rem !important;
 }
 
 h1 {
@@ -71,6 +79,7 @@ main.login-register-page {
 	color: white !important;
 }
 
-.btn {
+.register-btn,
+.login-btn {
 	width: 100%;
 }

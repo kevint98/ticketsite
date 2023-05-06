@@ -1,4 +1,40 @@
 {% extends 'main.html' %} {% block content %}
-<h2>Home</h2>
-<p>Hello, {{ user }}</p>
+<main class="container-fluid">
+	<div class="row">
+		<h2>Home</h2>
+        <!-- Projects Start -->
+
+		<div class="active-projects col-lg-3">
+			<div class="active-projects__header">
+				<h2>Active Projects</h2>
+			</div>
+			<ul class="active-projects__list"></ul>
+		</div>
+
+        <!-- Projects End -->
+
+        <!-- Dashboard Start -->
+
+		<div class="dashboard col-lg-6">
+			<div class="dashboard__header">
+				<h2>Dashboard</h2>
+				<a href="#" class="btn btn-primary">Create Ticket</a>
+			</div>
+			<p>0 Open Tickets</p>
+		</div>
+
+        <!-- Dashboard End -->
+
+        <!-- Activity Log Start -->
+		<div class="activity-log col-lg-3">
+			<div class="active-projects__header">
+				<h2>Activity Log</h2>
+			</div>
+			<ul class="activity-log__list"></ul>
+		</div>
+
+         <!-- Activity Log End -->
+	</div>
+</main>
+
 {% endblock content %}

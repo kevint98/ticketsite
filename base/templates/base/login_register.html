@@ -37,7 +37,7 @@
 				{% if messages%} {% for message in messages %}
 				<p>{{ message }}</p>
 				{% endfor %}{% endif %}
-				<button type="submit" class="btn btn-primary mb-3">Login</button>
+				<button type="submit" class="btn btn-primary mb-3 login-btn">Login</button>
 			</form>
 			<p>Haven't signed up yet? <a href="{% url 'register' %}">Register</a></p>
 			{% else %}
@@ -50,7 +50,7 @@
 				{% if messages%} {% for message in messages %}
 				<p>{{ message }}</p>
 				{% endfor %}{% endif %}
-				<button type="submit" class="btn btn-primary  mb-3">Register</button>
+				<button type="submit" class="btn btn-primary mb-3 register-btn">Register</button>
 			</form>
 			<p>Already Registered? <a href="{% url 'login' %}">Login</a></p>
 			{% endif %}
