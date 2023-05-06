@@ -3,13 +3,6 @@ from django.db import models
 import re
 
 
-class Role(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
-
 class CustomUserManager(UserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -32,10 +25,17 @@ class CustomUserManager(UserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    ROLE_CHOICES = [
+        ("PM", 'Project Manager'),
+        ("DPM", 'Digital Project Manager'),
+        ("WD", 'Web Developer'),
+        ("OM", 'Operations Manager'),
+        ("AM", 'Account Manager'),
+    ]
     name = models.CharField(max_length=255)
     email = models.EmailField(
         verbose_name='email address', max_length=255, unique=True)
-    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
+    role = models.CharField(choices=ROLE_CHOICES, max_length=3)
     is_staff = models.BooleanField(default=True)
 
     objects = CustomUserManager()
@@ -44,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = 'email'
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ['name']
+    REQUIRED_FIELDS = ['name', 'role']
 
     def __str__(self):
         return self.name
@@ -58,31 +58,37 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Project(models.Model):
     name = models.CharField(max_length=200)
-    created = models.DateTimeField(auto_now_add=True)
-    completed = models.DateTimeField(blank=True)
+    client = models.CharField(max_length=200, default='Internal')
+    project_manager = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True)
+    started = models.DateTimeField("start date", blank=True)
+    completed = models.DateTimeField("completion date", blank=True)
 
     def __str__(self):
         return self.name
 
 
-class IssueCategory(models.Model):
+class TicketCategory(models.Model):
     name = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name_plural = "Issue Categories"
+        verbose_name_plural = "Ticket Categories"
 
     def __str__(self):
         return self.name
 
 
-class Issue(models.Model):
+class Ticket(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     category = models.ForeignKey(
-        IssueCategory, on_delete=models.SET_NULL, null=True)
+        TicketCategory, on_delete=models.SET_NULL, null=True)
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    owner = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="createdtickets")
+    project_manager = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="assignedtickets")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
