@@ -5,6 +5,7 @@ from .models import User, Project, Ticket, TicketCategory, Response
 from django.contrib import messages
 from .forms import NewUserForm, TicketForm
 from django.utils import timezone
+from django.db.models import Q
 
 
 def loginPage(request):
@@ -49,7 +50,6 @@ def registerPage(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "Registration successful.")
             return redirect('home')
         else:
             # use Django's built-in validation
@@ -61,13 +61,17 @@ def registerPage(request):
 
 @login_required(login_url='/login')
 def home(request):
+    query = request.GET.get('q') if request.GET.get('q') != None else ''
     projects = Project.objects.all()
-    tickets = Ticket.objects.all()
+    tickets = Ticket.objects.filter(Q(title__icontains=query) | Q(
+        description__icontains=query) | Q(project__name__icontains=query) | Q(id__icontains=query))
+    ticket_responses = Response.objects.filter(ticket__title__icontains=query)
     user = request.user.name.split(" ")[0]
 
     context = {
         'projects': projects,
         'tickets': tickets,
+        'ticket_responses': ticket_responses,
         'user': user,
     }
     return render(request, 'base/index.html', context)

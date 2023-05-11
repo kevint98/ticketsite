@@ -126,6 +126,10 @@ View Ticket Page
 	padding: 1rem 0.25rem;
 }
 
+.response:last-of-type {
+	border-bottom: none;
+}
+
 .ticket__info .ticketListItem__meta,
 .ticket-replies .response__meta {
 	font-style: italic;

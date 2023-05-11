@@ -3,6 +3,9 @@
         <div "nav-item">
             <h1>LOGO</h1>
         </div>
+        <form action="{% url 'home' %}" class="search" method="GET">
+            <input name="q" type="text" placeholder="Search...">
+        </form>
         <div class="nav-item">
             <div class="profile-info">
                 <p>Hello, {{ user }}</p>

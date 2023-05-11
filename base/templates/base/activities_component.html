@@ -3,16 +3,22 @@
 		<h2>Activity Log</h2>
 	</div>
 	<ul class="activities__list">
-		{% for ticket in tickets %}
+		{% for response in ticket_responses %}
 		<div class="activities__box">
 			<div class="activities__boxHeader ticketListItem__header">
-				<span class="ticketListItem__owner">{{ ticket.owner }}</span> creat
+				<span class="ticketListItem__owner">{{ response.user }}</span>
 				<span class="ticketListItem__actions"
-					>{{ ticket.created|timesince }} ago</span
+					>{{ response.created|timesince }} ago</span
 				>
 			</div>
 			<div class="actities_boxContent">
-				<p>replied to {{ ticket.title }}</p>
+				<p>
+					replied to
+					<a href="{% url 'view-ticket' response.ticket.id %}"
+						>{{ response.ticket.title }}</a
+					>
+				</p>
+				<p>{{ response.body }}</p>
 			</div>
 		</div>
 		{% endfor %}
