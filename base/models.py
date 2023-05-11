@@ -103,3 +103,17 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Response(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    body = models.TextField(max_length=1)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated', '-created']
+
+    def __str__(self):
+        return self.body

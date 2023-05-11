@@ -4,18 +4,7 @@
 		<h2>Home</h2>
 		<!-- Projects Start -->
 
-		<div class="active-projects col-lg-3">
-			<div class="active-projects__header">
-				<h2>Active Projects</h2>
-			</div>
-			<ul class="active-projects__list">
-				{% for project in projects %}
-				<li class="project-item" id="project-{{ project.id }}">
-					{{ project.name }}
-				</li>
-				{% endfor %}
-			</ul>
-		</div>
+		{% include 'base/projects_component.html' %}
 
 		<!-- Projects End -->
 
@@ -24,25 +13,34 @@
 		<div class="dashboard col-lg-6">
 			<div class="dashboard__header">
 				<h2>Dashboard</h2>
-				<a href="{% url 'create-ticket' %}" class="btn btn-primary">Create Ticket</a>
+				<a href="{% url 'create-ticket' %}" class="btn btn-primary"
+					>Create Ticket</a
+				>
 			</div>
-			
+
 			<p>{{ tickets.count }} Open Ticket{{ tickets.count|pluralize }}</p>
 			<div class="ticketList">
 				{% for ticket in tickets %}
-					<div class="ticketListItem" id="ticket-{{ ticket.id }}">
-						<div class="ticketListItem__header" >
-							<span class="ticketListItem__owner">{{ ticket.owner }}</span>
-							<span class="ticketListItem__actions">{{ ticket.created|timesince }} ago</span>
-						</div>
-						<div class="ticketListItem__description">
-							<p>{{ ticket.description }}</p>
-						</div>
-						<div class="ticketListItem__meta">
-							<span class="ticketListItem__status">{{ ticket.status }}</span>
-							<span class="ticketListItem__project">{{ ticket.project }}</span>
-						</div>
+				<div class="ticketListItem" id="ticket-{{ ticket.id }}">
+					<div class="ticketListItem__header">
+						<span class="ticketListItem__owner">{{ ticket.owner }}</span>
+						<span class="ticketListItem__actions"
+							>{{ ticket.created|timesince }} ago</span
+						>
 					</div>
+					<div class="ticketListItem__title">
+						<a href="{% url 'view-ticket' ticket.id %}"
+							>{{ticket.title}} - Ticket ID: {{ticket.id}}</a
+						>
+					</div>
+					<div class="ticketListItem__description">
+						<p>{{ ticket.description }}</p>
+					</div>
+					<div class="ticketListItem__meta">
+						<span class="ticketListItem__status">{{ ticket.status }}</span>
+						<span class="ticketListItem__project">{{ ticket.project }}</span>
+					</div>
+				</div>
 				{% endfor %}
 			</div>
 		</div>
@@ -50,12 +48,7 @@
 		<!-- Dashboard End -->
 
 		<!-- Activity Log Start -->
-		<div class="activity-log col-lg-3">
-			<div class="active-projects__header">
-				<h2>Activity Log</h2>
-			</div>
-			<ul class="activity-log__list"></ul>
-		</div>
+		{% include 'base/activities_component.html' %}
 
 		<!-- Activity Log End -->
 	</div>

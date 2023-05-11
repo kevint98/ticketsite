@@ -79,13 +79,17 @@ main.login-register-page {
 	color: white !important;
 }
 
+.form-label .asteriskField {
+	color: red;
+}
+
 .register-btn,
 .login-btn {
 	width: 100%;
 }
 
 /*** 
-Create a Form Page
+Create a Ticket Page
 ***/
 
 main.create-ticket__page {
@@ -94,10 +98,48 @@ main.create-ticket__page {
 }
 
 .create-ticket__container {
-	margin: auto;
 	padding: 2rem;
-	background-color: var(--primary-shade);
-	border: none;
-	border-radius: 16px;
-	max-width: 100%;
+
+	max-width: 50%;
+}
+
+/*** 
+View Ticket Page
+***/
+
+.ticket__container {
+	margin-top: 2rem;
+}
+
+.ticket__container .ticketListItem {
+	margin-bottom: 1rem;
+}
+
+.container.ticket-replies {
+	border: 1px solid var(--dark-shade);
+	border-radius: 1rem;
+	background-color: var(--accent-shade);
+}
+
+.response {
+	border-bottom: 1px dashed var(--dark-shade);
+	padding: 1rem 0.25rem;
+}
+
+.ticket__info .ticketListItem__meta,
+.ticket-replies .response__meta {
+	font-style: italic;
+	font-size: 0.75rem;
+}
+
+.ticketListItem__meta .ticketListItem__project {
+	margin-right: 2rem;
+}
+
+.ticket__container textarea {
+	margin: 1rem 0;
+}
+
+.ticket__container .form-label {
+	color: initial !important;
 }

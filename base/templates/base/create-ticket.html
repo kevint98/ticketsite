@@ -1,6 +1,6 @@
 {% extends 'main.html' %} {% block content %} {% load crispy_forms_tags %}
 <main class="create-ticket__page">
-	<div class="create-ticket__container">
+	<div class="create-ticket__container container">
 		<form action="" method="POST">
 			{% csrf_token %} 
             {{ form|crispy }}

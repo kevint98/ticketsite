@@ -1,0 +1,54 @@
+{% extends 'main.html' %} {% block content %}
+<main>
+	<div class="container ticket__container">
+		<div class="ticket__info">
+			<div class="ticketListItem" id="ticket-{{ ticket.id }}">
+				<div class="ticketListItem__title">
+					<h3>{{ticket.title}} - Ticket ID: {{ticket.id}}</h3>
+				</div>
+				<div class="ticketListItem__description">
+					<p>{{ ticket.description }}</p>
+				</div>
+                <div class="ticketListItem__meta">
+                    <p class="ticketListItem__owner">Created by {{ ticket.owner }} about <span class="ticketListItem__actions"
+                        >{{ ticket.created|timesince }} ago</span></p>
+                    <span class="ticketListItem__project"
+                        >Project: {{ ticket.project }}</span
+                    >
+                    <span class="ticketListItem__status">Status: {{ ticket.status }}</span>
+                </div>
+			</div>	
+		</div>
+		<div class="container ticket-replies">
+			{% for response in responses %}
+			<div class="response">
+				<div class="response__body">
+					<p>{{response.body}}</p>
+				</div>
+				<div class="response__meta">
+					<p class="ticketListItem__owner">Reply from {{ response.user }} about <span class="ticketListItem__actions"
+						>{{ response.created|timesince }} ago</span
+					></p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<form action="" method="POST">
+			{% csrf_token %}
+            {% if ticket.status != 'Closed' or "PM" in request.user.role %}
+			    <textarea type="text" name="body" class="form-control" required /></textarea>
+            {% endif %}
+            {% if "PM" in request.user.role %}
+			    <label for="id_status" class="form-label">Update Status:</label> 
+            {% endif %}
+            {{form.status}} 
+            <div class="form-actions">
+                <a class="btn btn-secondary" href="{% url 'home' %}">Go Back</a>
+                {% if ticket.status != 'Closed' or "PM" in request.user.role %}
+                    <button class="btn btn-primary" type="submit">Reply</button>
+                {% endif %}
+            </div>
+		</form>
+	</div>
+</main>
+{% endblock content %}

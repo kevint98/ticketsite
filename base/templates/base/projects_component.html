@@ -1,0 +1,14 @@
+<div class="active-projects col-lg-3">
+	<div class="active-projects__header">
+		<h2>Active Projects</h2>
+	</div>
+	<ul class="active-projects__list">
+		{% for project in projects %}
+		<li class="project-item" id="project-{{ project.id }}">
+			{{ project.name }} {% if request.user == project.project_manager %}
+			<a href="">Edit</a>
+			{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+</div>

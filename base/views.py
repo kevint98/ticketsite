@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import User, Project, Ticket, TicketCategory
+from .models import User, Project, Ticket, TicketCategory, Response
 from django.contrib import messages
 from .forms import NewUserForm, TicketForm
 from django.utils import timezone
@@ -9,9 +9,13 @@ from django.utils import timezone
 
 def loginPage(request):
     page = 'login'
+    next = ''
 
     if request.user.is_authenticated:
-        redirect('home')
+        return redirect('home')
+
+    if request.GET:
+        next = request.GET['next']
 
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -21,7 +25,10 @@ def loginPage(request):
             user = User.objects.get(email=email)
             user = authenticate(request, email=email, password=password)
             login(request, user)
-            return redirect('home')
+            if next == '':
+                return redirect('home')
+            else:
+                return redirect(next)
         except:
             messages.error(
                 request, "Incorrect email address or password. Please try again.")
@@ -90,3 +97,27 @@ def createTicket(request):
 
     context = {'form': form, 'project_managers': project_managers}
     return render(request, 'base/create-ticket.html', context)
+
+
+@login_required(redirect_field_name='next', login_url='/login')
+def viewTicket(request, pk):
+    ticket = Ticket.objects.get(id=pk)
+    form = TicketForm(instance=ticket)
+    responses = ticket.response_set.all()
+
+    if request.user.role == "DPM":
+        form = TicketForm(instance=ticket,
+                          is_project_manager=True)
+
+    if request.method == 'POST':
+        ticket.status = request.POST.get('status')
+        ticket.save()
+        ticket_response = Response.objects.create(
+            user=request.user,
+            ticket=ticket,
+            body=request.POST.get('body')
+        )
+        return redirect('view-ticket', pk=ticket.id)
+
+    context = {'ticket': ticket, 'responses': responses, 'form': form}
+    return render(request, 'base/view-ticket.html', context)
