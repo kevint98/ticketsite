@@ -20,9 +20,7 @@ class TicketForm(ModelForm):
         exclude = ['owner', 'project_manager']
 
     def __init__(self, *args, **kwargs):
-        is_project_manager = kwargs.get('is_project_manager', False)
-        if 'is_project_manager' in kwargs:
-            del kwargs['is_project_manager']
+        is_project_manager = kwargs.pop('is_project_manager', False)
         super().__init__(*args, **kwargs)
         if not is_project_manager:
             self.fields['status'].widget = HiddenInput()

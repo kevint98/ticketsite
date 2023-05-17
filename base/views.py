@@ -5,7 +5,10 @@ from .models import User, Project, Ticket, TicketCategory, Response
 from django.contrib import messages
 from .forms import NewUserForm, TicketForm
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Count
+from django.db.models.functions import ExtractYear, ExtractMonth
+from django.http import JsonResponse
+from utils.charts import months, get_year_dict
 
 
 def loginPage(request):
@@ -125,3 +128,43 @@ def viewTicket(request, pk):
 
     context = {'ticket': ticket, 'responses': responses, 'form': form}
     return render(request, 'base/view-ticket.html', context)
+
+
+@login_required(redirect_field_name='next', login_url='/login')
+def get_filter_options(request):
+    grouped_projects = Project.objects.annotate(year=ExtractYear(
+        'started')).values('year').order_by('-year').distinct()
+    options = [project['year'] for project in grouped_projects]
+
+    return JsonResponse({"options": options, })
+
+
+@login_required(redirect_field_name='next', login_url='/login')
+def get_projects_chart(request, year):
+    projects = Project.objects.filter(started__year=year)
+    grouped_projects = projects.annotate(month=ExtractMonth('started')).values('month').annotate(
+        total=Count("started")).values("month", "total").order_by("month")
+
+    projects_dict = get_year_dict()
+
+    for group in grouped_projects:
+        projects_dict[months[group['month']-1]] = group['total']
+
+    return JsonResponse({
+        'title': {
+            'text': f'Projects started in {year}',
+        },
+        'scaleX': {
+            'label': {'text': 'Months'},
+            'labels': list(projects_dict.keys()),
+        },
+        'scaleY': {
+            'label': {'text': '# of Projects'},
+        },
+        'series': [
+            {
+                'values': list(projects_dict.values()),
+                'text': f'{year}'
+            }
+        ]
+    })

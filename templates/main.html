@@ -8,6 +8,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="{% static 'styles/style.css' %}" />
 		<title>{% block title %}Ticket Site{% endblock %}</title>
+		<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+		<script src="{% static 'js/charts.js' %}" defer></script>
 		{% load bootstrap5 %} {% bootstrap_css %}
 	</head>
 	<body>

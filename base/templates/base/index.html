@@ -43,6 +43,15 @@
 				</div>
 				{% endfor %}
 			</div>
+
+			<div class="container">
+				<form id="filterForm">
+					<label for="year">Choose a year:</label>
+					<select name="year" id="year"></select>
+					<input type="submit" value="Load" name="_load" />
+				</form>
+				<div id="myChart"></div>
+			</div>
 		</div>
 
 		<!-- Dashboard End -->

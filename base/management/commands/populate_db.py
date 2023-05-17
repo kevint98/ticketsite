@@ -54,7 +54,7 @@ class Command(BaseCommand):
         for i in range(0, projects):
             digital_project_managers = User.objects.filter(role="DPM")
             start = pytz.utc.localize(
-                datetime.now() - timedelta(days=random.randint(0, 365)))
+                datetime.now() - timedelta(days=random.randint(0, 730)))
 
             project = Project.objects.create(
                 name=F'Project {random.choice(PROJECT_NAMES)}-{random.randint(100, 999)}',
